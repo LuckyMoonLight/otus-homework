@@ -1,0 +1,3 @@
+rootProject.name = 'otus-homework'
+include 'unit-test-homework'
+
