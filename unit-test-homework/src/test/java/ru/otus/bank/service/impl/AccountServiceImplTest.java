@@ -3,22 +3,21 @@ package ru.otus.bank.service.impl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.function.Executable;
-import org.mockito.ArgumentMatcher;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
+import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ru.otus.bank.dao.AccountDao;
 import ru.otus.bank.entity.Account;
+import ru.otus.bank.entity.Agreement;
 import ru.otus.bank.service.exception.AccountException;
 
 import java.math.BigDecimal;
 import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class AccountServiceImplTest {
@@ -27,6 +26,9 @@ public class AccountServiceImplTest {
 
     @InjectMocks
     AccountServiceImpl accountServiceImpl;
+
+    @Captor
+    ArgumentCaptor<Account> accountArgumentCaptor;
 
     @Test
     public void testTransfer() {
@@ -83,4 +85,47 @@ public class AccountServiceImplTest {
         verify(accountDao).save(argThat(sourceMatcher));
         verify(accountDao).save(argThat(destinationMatcher));
         }
+
+    @Test
+    public void addAccount() {
+        Account expect = new Account();
+        expect.setType(11);
+        expect.setAgreementId(100L);
+        expect.setNumber("num");
+        expect.setAmount(BigDecimal.ZERO);
+
+        Agreement agreement = new Agreement();
+        agreement.setId(100L);
+
+        accountServiceImpl.addAccount(agreement, "num", 11, BigDecimal.ZERO);
+
+        verify(accountDao, times(1)).save(accountArgumentCaptor.capture());
+        assertThat(expect).usingRecursiveComparison().isEqualTo(accountArgumentCaptor.getValue());
+    }
+
+    @Test
+    public void charge() {
+        Account account = new Account();
+        account.setAmount(BigDecimal.TWO);
+
+        Account expect = new Account();
+        expect.setAmount(BigDecimal.ONE);
+
+        when(accountDao.findById(1L)).thenReturn(Optional.of(account));
+
+        accountServiceImpl.charge(1L, BigDecimal.ONE);
+
+        verify(accountDao, times(1)).save(accountArgumentCaptor.capture());
+        assertThat(expect).usingRecursiveComparison().isEqualTo(accountArgumentCaptor.getValue());
+    }
+
+    @Test
+    public void chargeThrows() {
+        when(accountDao.findById(anyLong())).thenReturn(Optional.empty());
+
+        AccountException actualException = assertThrows(AccountException.class, () -> accountServiceImpl.charge(1L, BigDecimal.ONE));
+
+        assertEquals("No source account", actualException.getLocalizedMessage());
+    }
+
 }

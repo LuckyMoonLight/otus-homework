@@ -4,17 +4,25 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.Mockito;
 import ru.otus.bank.dao.AgreementDao;
+import ru.otus.bank.entity.Account;
 import ru.otus.bank.entity.Agreement;
 
 import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 public class AgreementServiceImplTest {
 
     private AgreementDao dao = Mockito.mock(AgreementDao.class);
 
     AgreementServiceImpl agreementServiceImpl;
+
+
 
     @BeforeEach
     public void init() {
@@ -54,6 +62,18 @@ public class AgreementServiceImplTest {
         Assertions.assertEquals("test", captor.getValue());
         Assertions.assertTrue(result.isPresent());
         Assertions.assertEquals(10, agreement.getId());
+    }
+
+    @Test
+    public void addAgreement() {
+        Agreement expect = new Agreement();
+        expect.setName("test");
+
+        ArgumentCaptor<Agreement> agreementArgumentCaptor = ArgumentCaptor.forClass(Agreement.class);
+        agreementServiceImpl.addAgreement("test");
+
+        verify(dao, times(1)).save(agreementArgumentCaptor.capture());
+        assertThat(expect).usingRecursiveComparison().isEqualTo(agreementArgumentCaptor.getValue());
     }
 
 }
