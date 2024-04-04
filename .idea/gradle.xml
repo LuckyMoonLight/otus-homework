@@ -8,6 +8,7 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/reflection-homework" />
             <option value="$PROJECT_DIR$/unit-test-homework" />
           </set>
         </option>
