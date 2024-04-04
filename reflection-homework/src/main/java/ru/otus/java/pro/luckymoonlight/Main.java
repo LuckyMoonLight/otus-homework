@@ -11,7 +11,7 @@ public class Main {
         Reflections reflections = new Reflections("ru.otus.java.pro.luckymoonlight.tests", new SubTypesScanner(false));
         for (Class testClass : reflections.getSubTypesOf(Object.class)) {
             if(!testClass.isAnnotationPresent(Disabled.class)) {
-                new TestRunner().run(testClass);
+                new TestRunner().start(testClass);
             }
         }
     }

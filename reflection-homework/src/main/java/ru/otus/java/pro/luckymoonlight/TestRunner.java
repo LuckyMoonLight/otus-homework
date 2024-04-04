@@ -30,7 +30,7 @@ public class TestRunner {
         }
     }
 
-    public void run (Class runClass) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+    public void start (Class runClass) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
         Object testObject = runClass.getDeclaredConstructor().newInstance();
         valid(Arrays.asList(runClass.getDeclaredMethods()));
 
@@ -65,7 +65,8 @@ public class TestRunner {
                         .sorted(Comparator.comparing(m ->  m.getAnnotation(Test.class).priority()))
                         .toList().reversed(), afterMethods);
         executeMethod(testObject, afterAll);
-        System.out.println("Выполненно успешно: " + (methods.size() - errorCount) + " провалено: " + errorCount);
+        System.out.println("Выполненно успешно: " + (methods.size() - errorCount) + " провалено: " + errorCount
+                + " всего: " + methods.size());
     }
 
     private int runTest(Object object, List<Method> beforeMethods, List<Method> methods, List<Method> afterMethod) {
