@@ -1,4 +1,5 @@
 rootProject.name = 'otus-homework'
 include 'unit-test-homework'
 include 'reflection-homework'
+include 'stream-api-homework'
 
