@@ -6,12 +6,12 @@ import ru.otus.java.pro.luckymoonlight.annotation.Test;
 @Disabled
 public class DisabledTest {
     @Test
-    public void disabledTest_1() {
+    public void disabledTest1() {
         System.out.println("Мы этого не увидим");
     }
 
     @Test
-    public void disabledTest_2() {
+    public void disabledTest2() {
         System.out.println("и это тоже не увидим");
     }
 }
