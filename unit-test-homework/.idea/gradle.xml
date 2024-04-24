@@ -8,6 +8,8 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/stream-api-homework" />
+            <option value="$PROJECT_DIR$/unit-test-homework" />
           </set>
         </option>
       </GradleProjectSettings>
