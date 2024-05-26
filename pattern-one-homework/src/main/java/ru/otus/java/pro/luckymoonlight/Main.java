@@ -3,8 +3,11 @@ package ru.otus.java.pro.luckymoonlight;
 import dto.Box;
 import dto.Product;
 
+import java.util.logging.Logger;
+
 public class Main {
     public static void main(String[] args) {
+        Logger log = Logger.getLogger(Main.class.getName());
         Product product1 = Product.bulder()
             .id(1L)
             .title("title")
@@ -20,9 +23,9 @@ public class Main {
                 .height(10L)
                 .length(1L)
                 .build();
-        System.out.println(product1);
-        System.out.println(product2);
+        log.info(product1.toString());
+        log.info(product2.toString());
         Box testBox = new Box();
-        testBox.forEach(System.out::println);
+        testBox.forEach(b -> log.info(b));
     }
 }
