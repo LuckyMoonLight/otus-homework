@@ -1,10 +1,15 @@
 package dto;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
+@Getter
+@Setter
 public class Box implements Iterable<String> {
     private List<String> one = Arrays.asList("aaa", "bbb", "ccc");
     private List<String> two = Arrays.asList("test1", "test2");
